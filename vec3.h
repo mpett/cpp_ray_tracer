@@ -119,3 +119,10 @@ inline vec3& vec3::operator/=(const vec3 &v) {
     e[2] /= v.e[2];
     return *this;
 }
+
+inline vec3& vec3::operator*=(const float t) {
+    e[0] *= t;
+    e[1] *= t;
+    e[2] *= t;
+    return *this;
+}
