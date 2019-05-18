@@ -126,3 +126,15 @@ inline vec3& vec3::operator*=(const float t) {
     e[2] *= t;
     return *this;
 }
+
+inline vec3& vec3::operator/=(const float t) {
+    float k = 1.0/t;
+    e[0] *= k;
+    e[1] *= k;
+    e[2] *= k;
+    return *this;
+}
+
+inline vec3 unit_vector(vec3 v) {
+    return v / v.length();
+}
