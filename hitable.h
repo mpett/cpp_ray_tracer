@@ -1,7 +1,8 @@
 #ifndef HITABLEH
 #define HITABLEH
-
 #include "ray.h"
+
+class material;
 
 struct hit_record {
     float t;
