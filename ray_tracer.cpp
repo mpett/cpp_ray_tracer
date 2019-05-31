@@ -18,9 +18,9 @@ vec3 color(const ray& r, hitable *world) {
 }
 
 int main() {
-    int nx = 200;
-    int ny = 100;
-    int ns = 100;
+    int nx = 1000;
+    int ny = 500;
+    int ns = 500;
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
     hitable *list[2];
     list[0] = new sphere(vec3(0,0,-1), 0.5);
@@ -44,5 +44,6 @@ int main() {
             int ib = int(255.99*col[2]);
             std::cout << ir << " " << ig << " " << ib << "\n";
         }
+        std::cerr << j << " ";
     }
 }
