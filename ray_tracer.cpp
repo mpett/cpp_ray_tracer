@@ -5,11 +5,16 @@
 #include "camera.h"
 #include "material.h"
 
-vec3 color(const ray& r, hitable *world) {
+vec3 color(const ray& r, hitable *world, int depth) {
     hit_record rec;
     if (world->hit(r, 0.001, MAXFLOAT, rec)) {
-        vec3 target = rec.p + rec.normal + random_in_unit_sphere();
-        return 0.5 * color(ray(rec.p, target - rec.p), world);
+        ray scattered;
+        vec3 attenuation;
+        if (depth < 50 && rec.mat_ptr->scatter(r, rec, attenuation, scattered)) {
+            return attenuation * color(scattered, world, depth+1);
+        } else {
+            return vec3(0, 0, 0);
+        }
     } else {
         vec3 unit_direction = unit_vector(r.direction());
         float t = 0.5 * (unit_direction.y() + 1.0);
@@ -37,7 +42,7 @@ int main() {
                 float v = float(j + drand48()) / float(ny);
                 ray r = cam.get_ray(u, v);
                 vec3 p = r.point_at_parameter(2.0);
-                col += color(r, world);
+                col += color(r, world, 0);
             }
             col /= float(ns);
             col = vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
