@@ -36,18 +36,18 @@ function partition(a, lo, hi) {
             a[j] = tmp_1;
         }
     }
-    var tmp = a[hi];
-    a[hi] = a[i + 1];
-    a[i + 1] = tmp;
+    var tmp = a[i + 1];
+    a[i + 1] = a[hi];
+    a[hi] = tmp;
     return i + 1;
 }
 function main() {
     console.log("Hello World");
-    var a = [232, 435, 12, 35, 4, 4, 4, 2, 352, 5313, 34, 6, 7, 34, 23, 41, 21];
+    var a = [4325, 235, 1, 35, 5, 1, 3425, 5, 13, 6, 1, 5, 2345, 2];
     console.log(a);
     quicksort(a, 0, a.length - 1);
     console.log(a);
-    var b = sieve(4324223);
+    var b = sieve(3242324);
     console.log(b);
     console.log(b[b.length - 1]);
 }
