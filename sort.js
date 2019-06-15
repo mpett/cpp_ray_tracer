@@ -43,11 +43,11 @@ function partition(a, lo, hi) {
 }
 function main() {
     console.log("Hello World");
-    var a = [4325, 235, 1, 35, 5, 1, 3425, 5, 13, 6, 1, 5, 2345, 2];
+    var a = [24, 13, 34221, 34, 43, 1, 1, 4346, 36, 4, 234, 7, 8456, 24, 24];
     console.log(a);
     quicksort(a, 0, a.length - 1);
     console.log(a);
-    var b = sieve(3242324);
+    var b = sieve(232423);
     console.log(b);
     console.log(b[b.length - 1]);
 }

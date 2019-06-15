@@ -7,7 +7,7 @@ function sieve(n:number):number[] {
 
     for (let i:number = 2; i < Math.sqrt(n); i++) {
         for (let j:number = i*i; j < n; j += i) {
-            if(a[j]) {
+            if (a[j]) {
                 a[j] = false;
             }
         }
@@ -48,19 +48,19 @@ function partition(a:number[], lo:number, hi:number):number {
     let tmp:number = a[i+1];
     a[i+1] = a[hi];
     a[hi] = tmp;
-    
+
     return i+1;
 }
 
 function main():void {
     console.log("Hello World");
-    let a:number[] = [4325,235,1,35,5,1,3425,5,13,6,1,5,2345,2];
+    let a:number[] = [24,13,34221,34,43,1,1,4346,36,4,234,7,8456,24,24];
     console.log(a);
-    quicksort(a, 0, a.length-1);
+    quicksort(a, 0, a.length - 1);
     console.log(a);
-    let b:number[] = sieve(3242324);
+    let b:number[] = sieve(232423);
     console.log(b);
-    console.log(b[b.length-1]);
+    console.log(b[b.length - 1]);
 }
 
 main();
