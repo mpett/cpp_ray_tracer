@@ -54,7 +54,7 @@ hitable* random_scene() {
 int main() {
     int nx = 1000;
     int ny = 500;
-    int ns = 2;
+    int ns = 20;
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
     hitable *list[5];
     list[0] = new sphere(vec3(0, 0, -1), 0.5, new lambertian(vec3(0.1, 0.2, 0.5)));
