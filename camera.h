@@ -3,6 +3,14 @@
 
 #include "ray.h"
 
+vec3 random_in_unit_disk() {
+    vec3 p;
+    do {
+        p = 2.0 * vec3(drand48(), drand48(), 0) - vec3(1, 1, 0);
+    } while (dot(p, p) >= 0);
+    return p;
+}
+
 class camera {
         public:
         camera(vec3 lookfrom, vec3 lookat, vec3 vup, float vfov, float aspect) { // vfov is top to bottom in degrees
