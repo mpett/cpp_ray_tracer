@@ -87,7 +87,7 @@ int main() {
         
         int ra_foreground = 37;
         int ra_background = int( (rand() / (RAND_MAX + 1.0)) * (7.0 + 1.0) + 40.0);
-        std::cerr << "\033[1;" << ra_foreground << ";" << ra_background << "m" << j << "\033[0m";
+        std::cerr << "\033[1;" << ra_foreground << ";" << ra_background << "m" << " " << j << " " << "\033[0m";
     }
 
     std::cerr << std::endl;
