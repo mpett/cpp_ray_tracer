@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
+#include <ctime>
 #include "sphere.h"
 #include "hitable_list.h"
 #include "float.h"
@@ -42,9 +43,10 @@ float hit_sphere(const vec3& center, float radius, const ray& r) {
 }
 
 int main() {
-    int nx = 200;
-    int ny = 100;
-    int ns = 100;
+    srand(time(0));
+    int nx = 2000;
+    int ny = 1000;
+    int ns = 3;
 
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
@@ -57,6 +59,8 @@ int main() {
     hitable *world = new hitable_list(list, 4);
 
     camera cam;
+
+    std::cerr << "\033[1;30;42mCOMPUTATION STARTING. DO NOT TERMINATE THIS MACHINE.\033[0m\n\n";
 
     for (int j = ny - 1; j >= 0; j--) {
         for (int i = 0; i < nx; i++) {
@@ -79,8 +83,15 @@ int main() {
 
             std::cout << ir << " " << ig << " " << ib << "\n";
         }
+
+        
+        int ra_foreground = 37;
+        int ra_background = int( (rand() / (RAND_MAX + 1.0)) * (7.0 + 1.0) + 40.0);
+        std::cerr << "\033[1;" << ra_foreground << ";" << ra_background << "m" << j << "\033[0m";
     }
 
-    std::cerr << "Successful. Push a key to exit." << std::endl;
+    std::cerr << std::endl;
+    std::cerr << "\033[1;30;42mCOMPUTATION WAS A GLORIOUS SUCCESS!!!\033[0m\n";
+    std::cerr << "\n\033[1;31mALL OF YOUR BASE ARE BELONG TO US.\033[0m\n\n";
     std::getchar();
 }
