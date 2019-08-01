@@ -59,7 +59,7 @@ int main() {
     list[4] = new sphere(vec3(-1, 0, -1), -0.45, new dielectric(1.5));
     hitable *world = new hitable_list(list, 5);
 
-    camera cam;
+    camera cam(vec3(-2,2,1), vec3(0, 0, -1), vec3(0, 1, 0), 90, float(nx) / float(ny));
 
     std::cerr << "\033[1;30;42mCOMPUTATION STARTING. DO NOT TERMINATE THIS MACHINE.\033[0m\n\n";
 
