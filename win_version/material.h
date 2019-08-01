@@ -63,3 +63,4 @@ class metal : public material {
         vec3 albedo;
         float fuzz;
 };
+
