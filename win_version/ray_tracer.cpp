@@ -42,11 +42,41 @@ float hit_sphere(const vec3& center, float radius, const ray& r) {
     }
 }
 
+hitable *random_scene() {
+    int n = 500;
+    hitable **list = new hitable*[n+1];
+    list[0] = new sphere(vec3(0, -1000, 0), 1000, new lambertian(vec3(0.5, 0.5, 0.5)));
+    int i = 1;
+    
+    for (int a = -11; a < 11; a++) {
+        for (int b = -11; b < 11; b++) {
+            float choose_mat = (rand() / (RAND_MAX + 1.0));
+            vec3 center(a + 0.9 * (rand() / (RAND_MAX + 1.0)), 0.2, b + 0.9 * (rand() / (RAND_MAX + 1.0)));
+
+            if ((center - vec3(4, 0.2, 0)).length() > 0.9) {
+                if (choose_mat < 0.8) {
+                    list[i++] = new sphere(center, 0.2, new lambertian(vec3((rand() / (RAND_MAX + 1.0)) * (rand() / (RAND_MAX + 1.0)), (rand() / (RAND_MAX + 1.0)) * (rand() / (RAND_MAX + 1.0)), (rand() / (RAND_MAX + 1.0)) * (rand() / (RAND_MAX + 1.0)))));
+                } else if (choose_mat < 0.95) {
+                    list[i++] = new sphere(center, 0.2, new metal(vec3(0.5 * (1 + (rand() / (RAND_MAX + 1.0))), 0.5 * ( 1 + (rand() / (RAND_MAX + 1.0)) ), 0.5 * (rand() / (RAND_MAX + 1.0))), 0.3));
+                } else {
+                    list[i++] = new sphere(center, 0.2, new dielectric(1.5));
+                }
+            } 
+        }
+    }
+
+    list[i++] = new sphere(vec3(0, 1, 0), 1.0, new dielectric(1.5));
+    list[i++] = new sphere(vec3(-4, 1, 0), 1.0, new lambertian(vec3(0.4, 0.2, 0.1)));
+    list[i++] = new sphere(vec3(4, 1, 0), 1.0, new metal(vec3(0.7, 0.6, 0.5), 0.0));
+    
+    return new hitable_list(list, i);
+}
+
 int main() {
     srand(time(0));
-    int nx = 2000;
-    int ny = 1000;
-    int ns = 3;
+    int nx = 1920;
+    int ny = 1080;
+    int ns = 15;
 
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
@@ -58,8 +88,14 @@ int main() {
     list[3] = new sphere(vec3(-1, 0, -1), 0.5, new dielectric(1.5));
     list[4] = new sphere(vec3(-1, 0, -1), -0.45, new dielectric(1.5));
     hitable *world = new hitable_list(list, 5);
+    world = random_scene();
 
-    camera cam(vec3(-2,2,1), vec3(0, 0, -1), vec3(0, 1, 0), 90, float(nx) / float(ny));
+    vec3 lookfrom(13, 2, 3);
+    vec3 lookat(0, 0, 0);
+    float dist_to_focus = 10;
+    float aperture = 0.1;
+
+    camera cam(lookfrom, lookat, vec3(0,1,0), 20, float(nx) / float(ny), aperture, dist_to_focus);
 
     std::cerr << "\033[1;30;42mCOMPUTATION STARTING. DO NOT TERMINATE THIS MACHINE.\033[0m\n\n";
 
