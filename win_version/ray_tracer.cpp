@@ -4,6 +4,7 @@
 #include <cmath>
 #include <ctime>
 #include "sphere.h"
+#include "moving_sphere.h"
 #include "hitable_list.h"
 #include "float.h"
 #include "camera.h"
@@ -43,7 +44,7 @@ float hit_sphere(const vec3& center, float radius, const ray& r) {
 }
 
 hitable *random_scene() {
-    int n = 500;
+    int n = 50000;
     
     hitable **list = new hitable*[n+1];
     list[0] = new sphere(vec3(0, -1000, 0), 1000, new lambertian(vec3(0.5, 0.5, 0.5)));
@@ -62,22 +63,19 @@ hitable *random_scene() {
 
             if ((center - vec3(4, 0.2, 0)).length() > 0.9) {
                 if (choose_mat < 0.8) {
-                    list[i++] = new sphere(center, 0.2, 
-                            new lambertian(vec3(
-                                (rand() / (RAND_MAX + 1.0)) 
-                                    * (rand() / (RAND_MAX + 1.0)), 
-                                (rand() / (RAND_MAX + 1.0)) 
-                                    * (rand() / (RAND_MAX + 1.0)), 
-                                (rand() / (RAND_MAX + 1.0)) 
-                                    * (rand() / (RAND_MAX + 1.0))
-                                ))
-                            );
+                    list[i++] = new moving_sphere(center, center + vec3(0, 0.5 * (rand() / (RAND_MAX + 1.0)), 0), 0.0, 1.0, 0.2, 
+                        new lambertian(vec3( 
+                            (rand() / (RAND_MAX + 1.0)) * (rand() / (RAND_MAX + 1.0)), 
+                            (rand() / (RAND_MAX + 1.0)) * (rand() / (RAND_MAX + 1.0)), 
+                            (rand() / (RAND_MAX + 1.0)) * (rand() / (RAND_MAX + 1.0))
+                         ))
+                    );
                 } else if (choose_mat < 0.95) {
                     list[i++] = new sphere(center, 0.2, new metal(
                             vec3(
                                 0.5 * (1 + (rand() / (RAND_MAX + 1.0))), 
-                                0.5 * ( 1 + (rand() / (RAND_MAX + 1.0)) ), 
-                                0.5 * (rand() / (RAND_MAX + 1.0))
+                                0.5 * (1 + (rand() / (RAND_MAX + 1.0)) ), 
+                                0.5 * (1 + (rand() / (RAND_MAX + 1.0)))
                                 ), 
                             0.3));
                 } else {
@@ -97,9 +95,9 @@ hitable *random_scene() {
 int main() {
     srand(time(0));
     
-    int nx = 300;
-    int ny = 200;
-    int ns = 5;
+    int nx = 600;
+    int ny = 400;
+    int ns = 10;
 
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
@@ -117,12 +115,10 @@ int main() {
     vec3 lookfrom(13, 2, 3);
     vec3 lookat(0, 0, 0);
  
-    float dist_to_focus = 10;
-    float aperture = 0.1;
+    float dist_to_focus = 10.0;
+    float aperture = 0.0;
 
-    camera cam(lookfrom, lookat, vec3(0,1,0), 20, float(nx) / float(ny), aperture, dist_to_focus);
-
-    std::cerr << "\033[1;30;42mCOMPUTATION STARTING. DO NOT TERMINATE THIS MACHINE.\033[0m\n\n";
+    camera cam(lookfrom, lookat, vec3(0,1,0), 20, float(nx) / float(ny), aperture, dist_to_focus, 0.0, 1.0);
 
     for (int j = ny - 1; j >= 0; j--) {
         for (int i = 0; i < nx; i++) {
@@ -134,10 +130,9 @@ int main() {
                 float v = float(j + (rand() / (RAND_MAX + 1.0))) / float(ny);
             
                 ray r = cam.get_ray(u, v);
-               
                 vec3 p = r.point_at_parameter(2.0);
-               
                 col += color(r, world, 0);
+                
             }
 
             col /= float(ns);
@@ -148,18 +143,16 @@ int main() {
             int ib = int(255.99 * col[2]);
 
             std::cout << ir << " " << ig << " " << ib << "\n";
+            int ra_foreground = int( (rand() / (RAND_MAX + 1.0)) * (7.0 + 1.0) + 30.0);
+            int ra_background = int( (rand() / (RAND_MAX + 1.0)) * (7.0 + 1.0) + 40.0);
+            std::cerr << "\033[1;" << ra_foreground << ";" << ra_background << "m" 
+                                << "      COMPUTING " << j  << " COMPUTING      " << "\033[0m";
+            std::cerr << "\e[A\r\e[0K"<<std::endl;
+            
         }
-
-        
-        int ra_foreground = 37;
-        int ra_background = int( (rand() / (RAND_MAX + 1.0)) * (7.0 + 1.0) + 40.0);
-    
-        std::cerr << "\033[1;" << ra_foreground << ";" << ra_background << "m" 
-                                                << " ROW " << j << " " << "\033[0m";
     }
 
-    std::cerr << std::endl;
-    std::cerr << "\033[1;30;42mCOMPUTATION WAS A GLORIOUS SUCCESS!!!\033[0m\n";
-    std::cerr << "\n\033[1;31mALL OF YOUR BASE ARE BELONG TO US.\033[0m\n\n";
+    std::cerr << "\e[A\r\e[0K"<<std::endl;
+    std::cerr << "\033[1;31mALL OF YOUR BASE ARE BELONG TO US.\033[0m";
     std::getchar();
 }
