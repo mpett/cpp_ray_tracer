@@ -1,4 +1,5 @@
 # ray tracer
+![Donut Project](images/im24.png)
 ![Donut Project](images/im23.png)
 ![Donut Project](images/im22.png)
 ![Donut Project](images/im21.png)

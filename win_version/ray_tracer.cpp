@@ -95,8 +95,8 @@ hitable *random_scene() {
 int main() {
     srand(time(0));
     
-    int nx = 600;
-    int ny = 400;
+    int nx = 1920;
+    int ny = 1080;
     int ns = 10;
 
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
@@ -153,6 +153,6 @@ int main() {
     }
 
     std::cerr << "\e[A\r\e[0K"<<std::endl;
-    std::cerr << "\033[1;31mALL OF YOUR BASE ARE BELONG TO US.\033[0m";
+    std::cerr << "\033[1;31mALL OF YOUR BASE ARE BELONG TO US              .\033[0m";
     std::getchar();
 }
